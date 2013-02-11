@@ -4,11 +4,16 @@ require 'world'
 require 'cell'
 require 'curses'
 
+def init_game
+  board_size = 50
+  world = World.new(board_size)  
+end
+
 def init_screen
   Curses.noecho
   Curses.init_screen
   Curses.stdscr.keypad(true)
-  Curses.timeout= 0
+  Curses.timeout = 0
   
   begin
     yield
@@ -27,8 +32,22 @@ def random_initialize_world
   
   cells = world.cells.each do |cell|
     rand(100)
-    cell.alive = rand(100) > 65 ? false : true
+    cell.alive = rand(100) > 55 ? false : true
   end
+  
+  return world
+end
+
+def initialize_world_with_acorn
+  world = World.new(50)
+  
+  world.spawn_cell(11, 12)
+  world.spawn_cell(12, 14)
+  world.spawn_cell(13, 11)
+  world.spawn_cell(13, 12)
+  world.spawn_cell(13, 15)
+  world.spawn_cell(13, 16)
+  world.spawn_cell(13, 17)
   
   return world
 end
@@ -48,7 +67,7 @@ end
 def display(world)
   cells = world.cells.each_with_index do |cell, index|
     x, y = world.index_to_xy(index)
-    write x, y, cell.alive ? 'x' : '-'
+    write x, y, cell.alive ? '*' : ' '
   end
 end
 
@@ -61,7 +80,7 @@ init_screen do
     world.generate
     world.update
     
-    sleep(0.5)
+    sleep(0.15)
     
     case Curses.getch
     when ?q then break

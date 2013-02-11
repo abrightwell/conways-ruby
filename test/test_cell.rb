@@ -85,6 +85,7 @@ class TestCell < Test::Unit::TestCase
     
     assert cell.neighbor_count == 2
     
+    cell.generate
     cell.update
     
     assert_equal(true, cell.alive)
@@ -101,6 +102,7 @@ class TestCell < Test::Unit::TestCase
     
     assert cell.neighbor_count == 3
     
+    cell.generate
     cell.update
     
     assert_equal(true, cell.alive)
